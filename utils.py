@@ -20,3 +20,20 @@ def get_chroma_client():
         embedding_function=embedding_function,
         persist_directory="data/chroma")
 
+
+def store_docs(url):
+    """
+    Retrieves data from a website, processes it into document chunks, and stores them in a vector store.
+
+    Args:
+        url (str): The URL of the website to retrieve data from.
+
+    Returns:
+        None
+    """
+    text, metadata = get_data_from_website(url)
+    docs = get_doc_chunks(text, metadata)
+    vector_store = get_chroma_client()
+    vector_store.add_documents(docs)
+    vector_store.persist()
+
