@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="container">
+        <h1>Web Content Processor</h1>
+        <form id="processForm">
+            <label for="url">HTML URL:</label>
+            <input type="text" id="url" name="url" required>
+            <label for="organization_name">Organization Name:</label>
+            <input type="text" id="organization_name" name="organization_name" required>
+            <label for="organization_info">Organization Info:</label>
+            <textarea id="organization_info" name="organization_info" required></textarea>
+            <label for="contact_info">Contact Info:</label>
+            <textarea id="contact_info" name="contact_info" required></textarea>
+            <button type="submit">Process</button>
+        </form>
+        <div id="processMessage"></div>
+
+        <h2>Ask a Question</h2>
+        <form id="askForm">
+            <label for="question">Question:</label>
+            <input type="text" id="question" name="question" required>
+            <input type="hidden" id="ask_organization_name" name="organization_name">
+            <input type="hidden" id="ask_organization_info" name="organization_info">
+            <input type="hidden" id="ask_contact_info" name="contact_info">
+            <button type="submit">Ask</button>
+        </form>
+        <div id="answer"></div>
+    </div>
+
+    <script>
+        document.getElementById('processForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let url = document.getElementById('url').value;
+            let organization_name = document.getElementById('organization_name').value;
+            let organization_info = document.getElementById('organization_info').value;
+            let contact_info = document.getElementById('contact_info').value;
+
+            fetch('/process', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ url, organization_name, organization_info, contact_info }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('processMessage').textContent = data.message;
+                document.getElementById('ask_organization_name').value = organization_name;
+                document.getElementById('ask_organization_info').value = organization_info;
+                document.getElementById('ask_contact_info').value = contact_info;
+            });
+        });
+
+        document.getElementById('askForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            let question = document.getElementById('question').value;
+            let organization_name = document.getElementById('ask_organization_name').value;
+            let organization_info = document.getElementById('ask_organization_info').value;
+            let contact_info = document.getElementById('ask_contact_info').value;
+
+            fetch('/ask', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ question, organization_name, organization_info, contact_info }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('answer').textContent = data.answer;
+            });
+        });
+    </script>
+</body>
+</html>
