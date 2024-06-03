@@ -1,10 +1,4 @@
-from langchain.prompts import {
-	SystemMessagePromptTemplate,
-	PromptTemplate,
-	ChatPromptTemplate,
-	HumanMessagePromptTemplate,
-}
-
+from langchain.prompts import SystemMessagePromptTemplate, PromptTemplate, ChatPromptTemplate, HumanMessagePromptTemplate
 
 system_prompt = """You are an expert support agent at {organization_name}. {organization_info}
 
