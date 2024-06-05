@@ -8,30 +8,37 @@
 </head>
 <body>
     <div class="container">
-        <h1>Web Content Processor</h1>
-        <form id="processForm">
-            <label for="url">HTML URL:</label>
-            <input type="text" id="url" name="url" required>
-            <label for="organization_name">Organization Name:</label>
-            <input type="text" id="organization_name" name="organization_name" required>
-            <label for="organization_info">Organization Info:</label>
-            <textarea id="organization_info" name="organization_info" required></textarea>
-            <label for="contact_info">Contact Info:</label>
-            <textarea id="contact_info" name="contact_info" required></textarea>
-            <button type="submit">Process</button>
-        </form>
-        <div id="processMessage"></div>
+        <div class="left-pane">
+            <h1>Organization Info</h1>
+            <form id="processForm">
+                <label for="url">HTML URL:</label>
+                <input type="text" id="url" name="url" required>
+                <label for="organization_name">Organization Name:</label>
+                <input type="text" id="organization_name" name="organization_name" required>
+                <label for="organization_info">Organization Info:</label>
+                <textarea id="organization_info" name="organization_info" required></textarea>
+                <label for="contact_info">Contact Info:</label>
+                <textarea id="contact_info" name="contact_info" required></textarea>
+                <button type="submit">Process</button>
+            </form>
+            <div id="processMessage"></div>
 
-        <h2>Ask a Question</h2>
-        <form id="askForm">
-            <label for="question">Question:</label>
-            <input type="text" id="question" name="question" required>
-            <input type="hidden" id="ask_organization_name" name="organization_name">
-            <input type="hidden" id="ask_organization_info" name="organization_info">
-            <input type="hidden" id="ask_contact_info" name="contact_info">
-            <button type="submit">Ask</button>
-        </form>
-        <div id="answer"></div>
+            <h2>Chat History</h2>
+            <div id="chatHistory"></div>
+        </div>
+
+        <div class="right-pane" id="chatPane" style="display: none;">
+            <h2>Ask a Question</h2>
+            <form id="askForm">
+                <label for="question">Question:</label>
+                <input type="text" id="question" name="question" required>
+                <input type="hidden" id="ask_organization_name" name="organization_name">
+                <input type="hidden" id="ask_organization_info" name="organization_info">
+                <input type="hidden" id="ask_contact_info" name="contact_info">
+                <button type="submit">Ask</button>
+            </form>
+            <div id="answer"></div>
+        </div>
     </div>
 
     <script>
@@ -55,6 +62,7 @@
                 document.getElementById('ask_organization_name').value = organization_name;
                 document.getElementById('ask_organization_info').value = organization_info;
                 document.getElementById('ask_contact_info').value = contact_info;
+                document.getElementById('chatPane').style.display = 'block';
             });
         });
 
@@ -75,6 +83,11 @@
             .then(response => response.json())
             .then(data => {
                 document.getElementById('answer').textContent = data.answer;
+
+                let chatHistory = document.getElementById('chatHistory');
+                let chatEntry = document.createElement('div');
+                chatEntry.innerHTML = `<strong>Q:</strong> ${data.question}<br><strong>A:</strong> ${data.answer}`;
+                chatHistory.appendChild(chatEntry);
             });
         });
     </script>

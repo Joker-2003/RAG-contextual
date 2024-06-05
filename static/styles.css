@@ -10,10 +10,18 @@ body {
 }
 
 .container {
+    display: flex;
+    width: 80%;
     background: white;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.left-pane, .right-pane {
+    flex: 1;
+    margin: 10px;
+    padding: 10px;
 }
 
 h1, h2 {
@@ -50,3 +58,10 @@ button:hover {
     background-color: #0056b3;
 }
 
+#chatHistory {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    border-radius: 4px;
+}

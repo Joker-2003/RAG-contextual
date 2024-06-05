@@ -34,7 +34,7 @@ def ask():
 
     # Get response
     response = get_response(question, organization_name, organization_info, contact_info)
-    return jsonify({'answer': response})
+    return jsonify({'answer': response, 'question': question})
 
 if __name__ == "__main__":
     app.run(debug=True)
