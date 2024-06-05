@@ -5,6 +5,8 @@ from text_to_doc import get_doc_chunks
 from web_crawler import get_data_from_website
 from prompt import get_prompt
 from langchain.chains import ConversationalRetrievalChain
+from langchain_cohere import CohereEmbeddings
+from langchain_cohere import ChatCohere
 
 
 def get_chroma_client():
@@ -14,7 +16,7 @@ def get_chroma_client():
     Returns:
         langchain.vectorstores.chroma.Chroma: ChromaDB vector store instance.
     """
-    embedding_function = OpenAIEmbeddings()
+    embedding_function = CohereEmbeddings(model="embed-english-light-v3.0")
     return Chroma(
         collection_name="website_data",
         embedding_function=embedding_function,
@@ -45,11 +47,13 @@ def make_chain():
     Returns:
         langchain.chains.ConversationalRetrievalChain: ConversationalRetrievalChain instance.
     """
-    model = ChatOpenAI(
-            model_name="gpt-3.5-turbo",
-            temperature=0.0,
-            verbose=True
-        )
+    # model = ChatOpenAI(
+    #         model_name="gpt-3.5-turbo",
+    #         temperature=0.0,
+    #         verbose=True
+    #     )
+    
+    model = chat = ChatCohere(model="command")
     vector_store = get_chroma_client()
     prompt = get_prompt()
 

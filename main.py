@@ -13,10 +13,11 @@ def index():
 
 @app.route('/process', methods=['POST'])
 def process():
-    url = request.form['url']
-    organization_name = request.form['organization_name']
-    organization_info = request.form['organization_info']
-    contact_info = request.form['contact_info']
+    data = request.json
+    url = data['url']
+    organization_name = data['organization_name']
+    organization_info = data['organization_info']
+    contact_info = data['contact_info']
 
     # Store webpage content into vector store
     store_docs(url)
@@ -25,10 +26,11 @@ def process():
 
 @app.route('/ask', methods=['POST'])
 def ask():
-    question = request.form['question']
-    organization_name = request.form['organization_name']
-    organization_info = request.form['organization_info']
-    contact_info = request.form['contact_info']
+    data = request.json
+    question = data['question']
+    organization_name = data['organization_name']
+    organization_info = data['organization_info']
+    contact_info = data['contact_info']
 
     # Get response
     response = get_response(question, organization_name, organization_info, contact_info)
