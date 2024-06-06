@@ -37,8 +37,9 @@ def store_docs(url):
     docs = get_doc_chunks(text, metadata)
     vector_store = get_chroma_client()
     
-    vector_store.delete_collection()
+    #vector_store.delete_collection()
     # i want to clear the vector store before storing new embeddings
+   
     
     vector_store.add_documents(docs)
     vector_store.persist()
