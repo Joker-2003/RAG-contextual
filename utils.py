@@ -40,7 +40,11 @@ def store_docs(url):
     #vector_store.delete_collection()
     # i want to clear the vector store before storing new embeddings
    
-    
+    for collection in vector_store._client.list_collections():
+        ids = collection.get()['ids']
+        print('REMOVE %s document(s) from %s collection' % (str(len(ids)), collection.name))
+        if len(ids): collection.delete(ids)
+  
     vector_store.add_documents(docs)
     vector_store.persist()
 
